@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リアルタイム翻訳サンプル</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>リアルタイム翻訳</h1>
+
+        <div class="recording-section">
+            <button id="toggleRecording">録音開始</button>
+            <!-- input field for apikey and region-->
+            <div>
+                <input type="text" id="apiKey" placeholder="APIキーを入力してください">
+                <input type="text" id="region" placeholder="リージョンを入力してください">
+                <button id="saveSettings">設定を保存</button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div id="transcription-1"></div>
+            <div id="translation-1"></div>
+        </div>
+    </div>
+
+    <!-- Include your jQuery functions here -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/microsoft-cognitiveservices-speech-sdk@latest/distrib/browser/microsoft.cognitiveservices.speech.sdk.bundle-min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

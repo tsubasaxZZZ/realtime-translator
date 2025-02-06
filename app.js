@@ -3,6 +3,9 @@ $(document).ready(function () {
     // ブラウザのキャッシュからキーとリージョンを取得。取得できなければインプットフィールドから取得
     localStorage.getItem("apiKey") ? $("#apiKey").val(localStorage.getItem("apiKey")) : $("apiKey").value = "";
     localStorage.getItem("region") ? $("#region").val(localStorage.getItem("region")) : $("region").value = "";
+    localStorage.getItem("openAiKey") ? $("#azureOpenAiApiKey").val(localStorage.getItem("openAiKey")) : $("azureOpenAiApiKey").value = "";
+    localStorage.getItem("openAiEndpoint") ? $("#azureOpenAiEndpoint").val(localStorage.getItem("openAiEndpoint")) : $("azureOpenAiEndpoint").value = "";
+    localStorage.getItem("prompt") ? $("#prompt").val(localStorage.getItem("prompt")) : $("prompt").value = "";
 
 
     let speechConfig, audioConfig, recognizer;
@@ -115,4 +118,79 @@ $(document).ready(function () {
         }
     });
 
+    $("#sendToOpenAI").on("click", function () {
+        // 1) Azure OpenAI 用のキー＆エンドポイントを取得
+        const openAiKey = $("#azureOpenAiApiKey").val().trim();
+        const openAiEndpoint = $("#azureOpenAiEndpoint").val().trim();
+        const prompt = $("#prompt").val().trim();
+
+        if (!openAiKey || !openAiEndpoint) {
+            alert("Azure OpenAIのAPIキーとエンドポイントURLを入力してください。");
+            return;
+        }
+
+        // 2) ユーザがドラッグ選択したテキストを取得
+        const selectedText = window.getSelection().toString().trim();
+        if (!selectedText) {
+            alert("テキストが選択されていません。");
+            return;
+        }
+
+
+        const requestData = {
+            messages: [
+                {
+                    role: "system", content: `
+                    You are an excellent summary writer. You are also an SRE with good knowledge of Azure.
+You need to understand and respond to user-provided meeting transcripts accurately and without halation. You need to say you don't know if you don't know without making assumptions or inferences about what the user has not provided. Here are some additional instructions from the user.
+# Prompt
+${prompt}
+                ` },
+                { role: "user", content: selectedText }
+            ],
+            max_tokens: 4096,       // 必要に応じて調整
+            temperature: 0.7       // 必要に応じて調整
+        };
+
+        // 4) jQueryのajaxで直接POST
+        $.ajax({
+            url: openAiEndpoint,   // 例: https://xxxx.openai.azure.com/openai/deployments/xxx/chat/completions?api-version=2023-03-15-preview
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "api-key": openAiKey
+            },
+            data: JSON.stringify(requestData),
+            success: function (response) {
+                console.log("AzureOpenAI応答:", response);
+                if (response && response.choices && response.choices.length > 0) {
+                    // 5) 応答を #summary-by-gpt に表示
+                    const aiReply = response.choices[0].message.content;
+                    $("#summary-by-gpt").val(aiReply);
+                } else {
+                    $("#summary-by-gpt").val("応答が正しく取得できませんでした: " + JSON.stringify(response));
+                }
+            },
+            error: function (err) {
+                console.error("AzureOpenAI呼び出しエラー:", err);
+                alert("API呼び出しに失敗しました。コンソールを確認してください。");
+            }
+        });
+    });
+
+    $("#saveSettings").on("click", function () {
+        const key = $("#apiKey").val().trim();
+        const region = $("#region").val().trim();
+        localStorage.setItem("apiKey", key);
+        localStorage.setItem("region", region);
+
+        const openAiKey = $("#azureOpenAiApiKey").val().trim();
+        const openAiEndpoint = $("#azureOpenAiEndpoint").val().trim();
+        localStorage.setItem("openAiKey", openAiKey);
+        localStorage.setItem("openAiEndpoint", openAiEndpoint);
+
+        const prompt = $("#prompt").val().trim();
+        localStorage.setItem("prompt", prompt);
+
+    });
 });

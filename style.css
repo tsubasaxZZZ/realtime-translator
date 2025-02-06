@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 700px;
     margin: 50px auto;
     background-color: #fff;
     padding: 20px;
@@ -39,6 +39,8 @@ button:hover {
 
 .results-section {
     margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .results-section > div {
@@ -46,8 +48,22 @@ button:hover {
     border-radius: 5px;
     margin-bottom: 15px;
     padding: 10px;
+    width: 50%;
+    box-sizing: border-box;
 }
 
 #transcription, #translation {
     margin-bottom: 0; /* Remove the margin */
+}
+
+[id^="translation-"] {
+    user-select: none;
+    -webkit-user-select: none; /* 古いSafari/Chrome対策 */
+    -moz-user-select: none;    /* 古いFirefox対策 */
+    -ms-user-select: none;     /* 古いIE対策 */
+}
+
+#summary-by-gpt, #prompt {
+    width: 100%;
+    height: 200px;
 }

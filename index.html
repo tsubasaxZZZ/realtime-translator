@@ -15,10 +15,15 @@
 
         <div class="recording-section">
             <button id="toggleRecording">録音開始</button>
-            <!-- input field for apikey and region-->
             <div>
                 <input type="text" id="apiKey" placeholder="APIキーを入力してください">
                 <input type="text" id="region" placeholder="リージョンを入力してください">
+            </div>
+            <div>
+                <input type="text" id="azureOpenAiApiKey" placeholder="AzureOpenAIキー">
+                <input type="text" id="azureOpenAiEndpoint" placeholder="エンドポイントURL">
+            </div>
+            <div>
                 <button id="saveSettings">設定を保存</button>
             </div>
         </div>
@@ -30,6 +35,15 @@
 
         <div class="controll-panel">
             <button id="toggleStopScroll">Stop scroll</button>
+            <button id="sendToOpenAI">Generate summary</button>
+        </div>
+        <div>
+            <div>Prompt:</div>
+            <textarea id="prompt" placeholder="" width="100%"></textarea>
+        </div>
+        <div>
+            <div>Summary by AI:</div>
+            <textarea id="summary-by-gpt" placeholder="" width="100%"></textarea>
         </div>
     </div>
 

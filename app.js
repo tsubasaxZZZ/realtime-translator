@@ -10,6 +10,8 @@ $(document).ready(function () {
     // 録音開始ボタンと音声認識・翻訳結果を表示する要素を取得する
     const toggleRecording = document.getElementById("toggleRecording");
 
+    let isScrolling = true;
+
     let count = 1;
     // 録音開始ボタンがクリックされたときの処理
     toggleRecording.addEventListener("click", function () {
@@ -66,7 +68,8 @@ $(document).ready(function () {
                 //console output element and bottom
                 console.log(element);
                 console.log(bottom);
-                window.scrollTo(0, bottom);
+                if (isScrolling)
+                    window.scrollTo(0, bottom);
             };
 
             // 音声認識・翻訳が完了したときの処理
@@ -99,5 +102,17 @@ $(document).ready(function () {
         }
     });
 
+    const toggleStopScroll = document.getElementById("toggleStopScroll");
+
+    toggleStopScroll.addEventListener("click", function () {
+        console.log("toggleStopScroll");
+        if (isScrolling) {
+            toggleStopScroll.textContent = "Start scroll";
+            isScrolling = false;
+        } else {
+            toggleStopScroll.textContent = "Stop scroll";
+            isScrolling = true;
+        }
+    });
 
 });

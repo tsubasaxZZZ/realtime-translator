@@ -193,4 +193,12 @@ ${prompt}
         localStorage.setItem("prompt", prompt);
 
     });
+
+    $(document).on("click", "[id^='transcription-']", function () {
+        if ($(this).css("background-color") === "rgb(255, 255, 0)") {
+            $(this).css("background-color", "");
+        } else {
+            $(this).css("background-color", "rgb(255, 255, 0)");
+        }
+    });
 });

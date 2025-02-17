@@ -148,7 +148,7 @@ ${prompt}
                 ` },
                 { role: "user", content: selectedText }
             ],
-            max_tokens: 4096,       // 必要に応じて調整
+            max_tokens: 10000,       // 必要に応じて調整
             temperature: 0.7       // 必要に応じて調整
         };
 

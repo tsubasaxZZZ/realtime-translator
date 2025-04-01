@@ -9,6 +9,77 @@ $(document).ready(function () {
 
 
     let speechConfig, audioConfig, recognizer;
+    
+    // デフォルトの言語設定
+    let sourceLanguage = "en-US";
+    let targetLanguage = "ja";
+    
+    // URLのハッシュを確認して言語設定を更新する関数
+    function updateLanguageSettings() {
+        const hash = window.location.hash.substring(1); // #を除去
+        
+        if (hash) {
+            const langPair = hash.split('-');
+            if (langPair.length === 2) {
+                // 言語コードを適切な形式に変換（例：en → en-US, ja → ja-JP）
+                sourceLanguage = convertToSpeechLanguageCode(langPair[0]);
+                targetLanguage = langPair[1];
+                
+                console.log(`言語設定を更新: ${sourceLanguage} → ${targetLanguage}`);
+                
+                // 現在の言語設定を表示
+                updateLanguageDisplay(langPair[0], targetLanguage);
+            }
+        } else {
+            // ハッシュがない場合はデフォルト設定を表示
+            updateLanguageDisplay('en', 'ja');
+        }
+    }
+    
+    // 言語表示を更新する関数
+    function updateLanguageDisplay(source, target) {
+        const languageNames = {
+            'en': '英語',
+            'ja': '日本語',
+            'fr': 'フランス語',
+            'de': 'ドイツ語',
+            'es': 'スペイン語',
+            'it': 'イタリア語',
+            'zh': '中国語',
+            'ko': '韓国語',
+            'ru': 'ロシア語'
+            // 必要に応じて他の言語を追加
+        };
+        
+        const sourceName = languageNames[source] || source;
+        const targetName = languageNames[target] || target;
+        
+        $('#current-language-setting').text(`${sourceName}→${targetName}`);
+    }
+    
+    // 言語コードを音声認識用の形式に変換する関数
+    function convertToSpeechLanguageCode(langCode) {
+        const languageMap = {
+            'en': 'en-US',
+            'ja': 'ja-JP',
+            'fr': 'fr-FR',
+            'de': 'de-DE',
+            'es': 'es-ES',
+            'it': 'it-IT',
+            'zh': 'zh-CN',
+            'ko': 'ko-KR',
+            'ru': 'ru-RU'
+            // 必要に応じて他の言語を追加
+        };
+        
+        return languageMap[langCode] || langCode;
+    }
+    
+    // ページ読み込み時に言語設定を更新
+    updateLanguageSettings();
+    
+    // ハッシュが変更されたときに言語設定を更新
+    window.addEventListener('hashchange', updateLanguageSettings);
 
     // 録音開始ボタンと音声認識・翻訳結果を表示する要素を取得する
     const toggleRecording = document.getElementById("toggleRecording");
@@ -30,8 +101,9 @@ $(document).ready(function () {
             }
             speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(key, region);
 
-            speechConfig.speechRecognitionLanguage = "en-US";
-            speechConfig.addTargetLanguage("ja");
+            // URLのハッシュに基づいて言語設定を適用
+            speechConfig.speechRecognitionLanguage = sourceLanguage;
+            speechConfig.addTargetLanguage(targetLanguage);
 
             // 音声入力の設定オブジェクトを作成する
             // ここではマイクロフォンからの入力を選択していますが、他の入力も選択できます

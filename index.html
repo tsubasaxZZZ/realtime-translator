@@ -12,6 +12,17 @@
 <body>
     <div class="container">
         <h1>リアルタイム翻訳</h1>
+        <div class="language-info">
+            <p>言語設定: URLのハッシュで言語を切り替えられます</p>
+            <ul>
+                <li><a href="#en-ja">英語→日本語 (#en-ja)</a></li>
+                <li><a href="#ja-en">日本語→英語 (#ja-en)</a></li>
+                <li><a href="#fr-ja">フランス語→日本語 (#fr-ja)</a></li>
+                <li><a href="#zh-ja">中国語→日本語 (#zh-ja)</a></li>
+                <!-- 必要に応じて他の言語ペアを追加 -->
+            </ul>
+            <p>現在の設定: <span id="current-language-setting">英語→日本語</span></p>
+        </div>
 
         <div class="recording-section">
             <button id="toggleRecording">録音開始</button>

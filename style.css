@@ -67,3 +67,48 @@ button:hover {
     width: 100%;
     height: 200px;
 }
+
+/* 言語設定の表示スタイル */
+.language-info {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.language-info p {
+    margin: 5px 0;
+}
+
+.language-info ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.language-info li {
+    list-style-type: none;
+}
+
+.language-info a {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #007BFF;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.language-info a:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+#current-language-setting {
+    font-weight: bold;
+    color: #007BFF;
+}
